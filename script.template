@@ -1,0 +1,44 @@
+{{ define "script" }}
+#!/usr/bin/env bash
+# Akmey.sh auto-generated script
+# Install {{ .Name }} | { date('d/m/Y') }
+# This kind of script can be gathered by doing request :
+# {!! url('<username>.sh') !!}
+# Enjoy! (Akmey is licensed under GPLv3)
+# copy for ghak
+ATH_KEYS_PATH="$HOME/.ssh/authorized_keys"
+
+# checks if the ~/.ssh folder exists, if not, creates it
+[ ! -d "$HOME/.ssh" ] && mkdir $HOME/.ssh
+
+if [ ! -f $ATH_KEYS_PATH ]; then touch $ATH_KEYS_PATH; fi
+
+if [ -n "$1" ]
+then
+    echo "Installing {{ .Name }} keys in $1..."
+    if [ ! -f $1 ]
+    then
+        echo "$1 : no such file or directory"
+    else
+        echo "
+# -- ghak.sh User:{{ .Name }} --
+{{range $key := .Keys }}
+{{ $key.Key }}
+{{end}}
+# -- Akmey.sh end --" >> $1
+        echo "{{ .Name }} is installed"
+        exit 0
+    fi
+else
+    echo "Installing {{ .Name }} keys in $ATH_KEYS_PATH..."
+        echo "
+# -- ghak.sh User:{{ .Name  }} --
+{{range $key := .Keys }}
+{{ $key.Key }}
+{{ end }}
+-- ghak.sh end --" >> $ATH_KEYS_PATH
+        echo "{{ .Name  }} is installed"
+        exit 0
+    fi
+fi
+{{end}}
