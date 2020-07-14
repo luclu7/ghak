@@ -67,6 +67,6 @@ func main() {
 	r.HandleFunc("/{user}", client.handlerScript)
 
 	logger.Info("Listening on " + *port + "...")
-	http.ListenAndServe(*port, r)
+	logger.Fatalln(http.ListenAndServe(*port, r))
 
 }
